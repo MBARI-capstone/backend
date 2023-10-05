@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * When authentication error happens, send error response to client
+ */
 @Component
 public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
     @Override

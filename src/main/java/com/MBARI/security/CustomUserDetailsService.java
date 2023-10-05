@@ -14,6 +14,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Collections;
+
+/**
+ * Spring Security Authentication mechanism
+ */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
     private UserRepository userRepository;
@@ -25,9 +29,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username not found: " + username));
+        // ここのUserとUserEntityの関係性は
         return new User(user.getUsername(), user.getPassword(), mapRoleToAuthorities(user.getRole()));
     }
 
+    /**
+     * Mapping helper function for GrantedAuthority for Spring Security
+     */
     private Collection<GrantedAuthority> mapRoleToAuthorities(Role role) {
         return Collections.singletonList(new SimpleGrantedAuthority(role.getRoleName()));
     }
