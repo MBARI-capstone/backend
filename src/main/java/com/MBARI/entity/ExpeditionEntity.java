@@ -27,14 +27,10 @@ public class ExpeditionEntity {
     @Column(name = "purpose",nullable = false)
     private String purpose;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "chiefScientistId")
-    private Integer chiefScientistId;
+    @Column(name = "chiefScientistId",nullable = false)
+    private Integer chiefScientist;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "principalInvestigatorId")
+    @Column(name = "principalInvestigator", nullable= false)
     private Integer principalInvestigator;
 
     @Column(name = "scheduledStartDatetime",nullable = false)
@@ -49,18 +45,36 @@ public class ExpeditionEntity {
     @Column(name = "participants",nullable = false)
     private String participants;
 
+    @Column(name = "regionDescription",nullable = false)
+    private String regionDescription;
 
-    //TODO
-    //                             participants TEXT,
-    //                             regionDescription VARCHAR(2048),
-    //                             plannedTrackDescription VARCHAR(6144),
-    //                             actualStartDatetime DATETIME,
-    //                             actualEndDatetime DATETIME,
-    //                             accomplishments TEXT,
-    //                             scientistComments TEXT,
-    //                             sciObjectivesMet BOOLEAN,
-    //                             operatorComments TEXT,
-    //                             allEquipmentFunctioned BOOLEAN,
-    //                             otherComments TEXT,
-    //                             updatedBy INT,
+    @Column(name = "plannedTrackDescription",nullable = false)
+    private String plannedTrackDescription;
+
+    @Column(name = "actualStartDatetime",nullable = false)
+    private Calendar  actualStartDatetime;
+
+    @Column(name = "actualEndDatetime",nullable = false)
+    private Calendar  actualEndDatetime;
+
+    @Column(name = "accomplishments",nullable = false)
+    private String accomplishments;
+
+    @Column(name = "scientistComments",nullable = true)
+    private String scientistComments;
+
+    @Column(name = "sciObjectivesMet",nullable = false)
+    private Boolean sciObjectivesMet;
+
+    @Column(name = "operatorComments",nullable = true)
+    private Boolean operatorComments;
+
+    @Column(name = "allEquipmentFunctioned",nullable = false)
+    private Boolean allEquipmentFunctioned;
+
+    @Column(name = "otherComments",nullable = true)
+    private String otherComments;
+
+    @Column(name = "updatedBy",nullable = false)
+    private Integer updatedBy;
 }
