@@ -12,7 +12,7 @@ import java.util.Calendar;
 @Table(name="Expeditions")
 public class ExpeditionEntity {
 
-    //TODO Fix ID's of foreign keys
+    //TODO verify that we need the fields to be in this way.
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -77,4 +77,158 @@ public class ExpeditionEntity {
 
     @Column(name = "updatedBy",nullable = false)
     private Integer updatedBy;
+
+    public Integer getExpeditionId() {
+        return expeditionId;
+    }
+
+//    public void setExpeditionId(Integer expeditionId) {
+//        this.expeditionId = expeditionId;
+//    }
+
+    public Integer getShipId() {
+        return shipId;
+    }
+
+    public void setShipId(Integer shipId) {
+        this.shipId = shipId;
+    }
+    public String getPurpose() {
+        return purpose;
+    }
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
+    }
+    public Integer getChiefScientist() {
+        return chiefScientist;
+    }
+    public void setChiefScientist(Integer chiefScientist) {
+        this.chiefScientist = chiefScientist;
+    }
+    public Integer getPrincipalInvestigator() {
+        return principalInvestigator;
+    }
+    public void setPrincipalInvestigator(Integer principalInvestigator) {
+        this.principalInvestigator = principalInvestigator;
+    }
+
+    public Calendar getScheduledStartDatetime() {
+        return scheduledStartDatetime;
+    }
+
+    public void setScheduledStartDatetime(Calendar scheduledStartDatetime) {
+        this.scheduledStartDatetime = scheduledStartDatetime;
+    }
+
+    public Calendar getScheduledEndDatetime() {
+        return scheduledEndDatetime;
+    }
+
+    public void setScheduledEndDatetime(Calendar scheduledEndDatetime) {
+        this.scheduledEndDatetime = scheduledEndDatetime;
+    }
+
+    public String getEquipmentDescription() {
+        return equipmentDescription;
+    }
+
+    public void setEquipmentDescription(String equipmentDescription) {
+        this.equipmentDescription = equipmentDescription;
+    }
+
+    public String getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(String participants) {
+        this.participants = participants;
+    }
+
+    public String getRegionDescription() {
+        return regionDescription;
+    }
+
+    public void setRegionDescription(String regionDescription) {
+        this.regionDescription = regionDescription;
+    }
+
+    public String getPlannedTrackDescription() {
+        return plannedTrackDescription;
+    }
+
+    public void setPlannedTrackDescription(String plannedTrackDescription) {
+        this.plannedTrackDescription = plannedTrackDescription;
+    }
+
+    public Calendar getActualStartDatetime() {
+        return actualStartDatetime;
+    }
+
+    public void setActualStartDatetime(Calendar actualStartDatetime) {
+        this.actualStartDatetime = actualStartDatetime;
+    }
+
+    public Calendar getActualEndDatetime() {
+        return actualEndDatetime;
+    }
+
+    public void setActualEndDatetime(Calendar actualEndDatetime) {
+        this.actualEndDatetime = actualEndDatetime;
+    }
+
+    public String getAccomplishments() {
+        return accomplishments;
+    }
+
+    public void setAccomplishments(String accomplishments) {
+        this.accomplishments = accomplishments;
+    }
+
+    public String getScientistComments() {
+        return scientistComments;
+    }
+
+    public void setScientistComments(String scientistComments) {
+        this.scientistComments = scientistComments;
+    }
+
+    public Boolean getSciObjectivesMet() {
+        return sciObjectivesMet;
+    }
+
+    public void setSciObjectivesMet(Boolean sciObjectivesMet) {
+        this.sciObjectivesMet = sciObjectivesMet;
+    }
+
+    public Boolean getOperatorComments() {
+        return operatorComments;
+    }
+
+    public void setOperatorComments(Boolean operatorComments) {
+        this.operatorComments = operatorComments;
+    }
+
+    public Boolean getAllEquipmentFunctioned() {
+        return allEquipmentFunctioned;
+    }
+
+    public void setAllEquipmentFunctioned(Boolean allEquipmentFunctioned) {
+        this.allEquipmentFunctioned = allEquipmentFunctioned;
+    }
+
+    public String getOtherComments() {
+        return otherComments;
+    }
+
+    public void setOtherComments(String otherComments) {
+        this.otherComments = otherComments;
+    }
+
+    public Integer getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(Integer updatedBy) {
+        this.updatedBy = updatedBy;
+    }
 }

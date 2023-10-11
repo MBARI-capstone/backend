@@ -5,6 +5,29 @@ import lombok.Data;
 import java.util.Calendar;
 @Data
 public class ExpeditionDto {
+    //used to transfer specific combinations of data
+    //between database and API
+
+
+    public ExpeditionDto() {
+        super();
+    }
+
+    //TODO Not sure what other means of Data Transfer we need
+    public ExpeditionDto(String shipName, String purpose, String chiefScientist, String principalInvestigator, String participants, String equipmentDesc, String regionDesc, String plannedTrackDesc, String description, Calendar startDatetime, Calendar endDatetime) {
+        ShipName = shipName;
+        Purpose = purpose;
+        ChiefScientist = chiefScientist;
+        PrincipalInvestigator = principalInvestigator;
+        Participants = participants;
+        EquipmentDesc = equipmentDesc;
+        RegionDesc = regionDesc;
+        PlannedTrackDesc = plannedTrackDesc;
+        Description = description;
+        StartDatetime = startDatetime;
+        EndDatetime = endDatetime;
+    }
+
     private String ShipName;
     private String Purpose;
     private String ChiefScientist;
@@ -19,4 +42,6 @@ public class ExpeditionDto {
     private Calendar EndDatetime;
 
     Boolean Approved;
+
+
 }
