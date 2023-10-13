@@ -1,9 +1,13 @@
 package com.MBARI.controller;
 
-import com.MBARI.dto.ExpeditionDto;
+import com.MBARI.dto.PreExpeditionDto;
+import com.MBARI.dto.PostExpeditionDto;
 import com.MBARI.entity.ExpeditionEntity;
+import com.MBARI.entity.Ship;
 import com.MBARI.repository.ExpeditionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -20,27 +24,44 @@ public class ExpeditionController {
         System.out.println("Testing PreExpedition Controller.");
     }
 
-    @PostMapping("/expedition")
-    public ExpeditionEntity AddPreExpeditionRequest(  @RequestBody ExpeditionEntity ex){
-            //ExpeditionEntity Ex = new ExpeditionEntity();
-            //if id exists do we throw an exception?
-            //post with approved as null
-            //
+    @PostMapping("/preexpedition")
+    public ExpeditionEntity AddPreExpeditionRequest(  @RequestBody PreExpeditionDto ex){
+            ExpeditionEntity newEx = new ExpeditionEntity();
 
-            //TODO Create POST a Preexpedition Report for API To Transfer to DB
-            //TODO These comments are references to build the method
-            ExpeditionEntity savedExped = ExpeditionRepository.save(ex);
-            //student.setName(student_name);
-            //Student savedStudent = studentRepository.save(student);
-           // System.out.println("Student successfully added.");
-            //return savedStudent;
-        return savedExped;
-    }
+            Ship ship = shipRepostiory.findById(ex.getShipId());
 
-    @GetMapping("/expedition_request")
-    public ExpeditionDto RetrievePreExpeditionRequest(@RequestParam("expeditionId") Integer id){
-        ExpeditionRepository.findbyID();
+            newEx.setShipId(ex.getShipId());
+            newEx.setPurpose(ex.getPurpose());
+            newEx.setChiefScientist(ex.getChiefScientist());
+            newEx.setPrincipalInvestigator(ex.getPrincipalInvestigator());
+            newEx.setScheduledStartDatetime(ex.getScheduledStartDatetime());
+            newEx.setScheduledEndDatetime(ex.getScheduledEndDatetime());
+            newEx.setEquipmentDescription(ex.getEquipmentDescription());
+            newEx.setParticipants(ex.getParticipants());
+            newEx.setRegionDescription(ex.getRegionDescription());
+            newEx.setPlannedTrackDescription(ex.getPlannedTrackDescription());
+
+           ExpeditionEntity savedExped = ExpeditionRepository.save(newEx);
+
+           return savedExped;
     }
-    //TODO @PutMapping approval after retriving request
-    //TODO @GetMapping approval or denial
+    @PostMapping("/postexpedition")
+    public ExpeditionEntity AddPostExpeditionReport(@RequestBody PostExpeditionDto ex){
+        ExpeditionEntity newEx = new ExpeditionEntity();
+
+        newEx.setActualStartDatetime(ex.getActualStartTime());
+        newEx.setActualEndDatetime(ex.getActualEndDatetime());
+        newEx.setAccomplishments(ex.getAccomplishments());
+        newEx.setScientistComments(ex.getScientistComments());
+        newEx.setSciObjectivesMet(ex.getSciObjectivesMet());
+        newEx.setOperatorComments(ex.getOperatorComments());
+        newEx.setAllEquipmentFunctioned(ex.getAllEquipmentFunctioned());
+        newEx.setOtherComments(ex.getOtherComments());
+        newEx.setUpdatedBy(ex.getUpdatedBy());
+    }
+//    @GetMapping("/expedition_request")
+//    public ExpeditionDto RetrievePreExpeditionRequest(@RequestParam("expeditionId") Integer id){
+//        //ExpeditionRepository.findbyID();
+//        return null;
+//    }
 }
