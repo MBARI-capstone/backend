@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
-public interface ExpeditionRepository extends CrudRepository<ExpeditionEntity, Integer> {
+public interface ExpeditionRepository extends JpaRepository<ExpeditionEntity, Integer> {
 
 }

@@ -6,13 +6,28 @@ import java.util.Calendar;
 
 @Data
 public class PreExpeditionDto {
+    //Ship Data
+    private Integer shipId;
+    private String shipName;
+
+
+    //User Data
+    private Integer userId;
+    private String username;
+
+    //Expedition/Scheduling Data
     private Integer expeditionId;
-    private Integer ShipId;
     private String purpose;
+
     private Integer chiefScientistId;
-    private Integer principalInvestigator;
+    private String chiefScientist;
+
+    private Integer principalInvestigatorId;
+    private String principalInvestigator;
+
     private LocalDateTime scheduledStartTime;
     private LocalDateTime scheduledEndTime;
+
     private String equipmentDesc;
     private String participants;
     private String regionDesc;

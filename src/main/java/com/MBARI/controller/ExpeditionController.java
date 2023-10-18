@@ -4,12 +4,14 @@ import com.MBARI.dto.PreExpeditionDto;
 import com.MBARI.dto.PostExpeditionDto;
 import com.MBARI.entity.ExpeditionEntity;
 import com.MBARI.entity.Ship;
+import com.MBARI.entity.UserEntity;
 import com.MBARI.repository.ExpeditionRepository;
+import com.MBARI.repository.UserRepository;
+import com.MBARI.repository.shipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Optional;
 
 @RestController
@@ -19,6 +21,8 @@ public class ExpeditionController {
     @Autowired
     ExpeditionRepository ExpeditionRepository;
     ExpeditionEntity ExpeditionEntity;
+    shipRepository shipRepository;
+    UserRepository userRepository;
     @PostMapping("/test")
     public void TestRequest() {
         System.out.println("Testing PreExpedition Controller.");
@@ -28,12 +32,17 @@ public class ExpeditionController {
     public ExpeditionEntity AddPreExpeditionRequest(  @RequestBody PreExpeditionDto ex){
             ExpeditionEntity newEx = new ExpeditionEntity();
 
-            Ship ship = shipRepostiory.findById(ex.getShipId());
+            Ship ship = shipRepository.findByShipName(ex.getShipName());
 
-            newEx.setShipId(ex.getShipId());
+            UserEntity chiefSci = userRepository.findByUsername(ex.getUsername());
+            UserEntity prinInv = userRepository.findByUsername(ex.getUsername());
+
+            newEx.setShipId(ship); //Set Ship
+
+            newEx.setChiefScientist(chiefSci); //setChiefScientist
+            newEx.setPrincipalInvestigator(prinInv); //setPrincipalInvestigator
+
             newEx.setPurpose(ex.getPurpose());
-            newEx.setChiefScientist(ex.getChiefScientist());
-            newEx.setPrincipalInvestigator(ex.getPrincipalInvestigator());
             newEx.setScheduledStartDatetime(ex.getScheduledStartDatetime());
             newEx.setScheduledEndDatetime(ex.getScheduledEndDatetime());
             newEx.setEquipmentDescription(ex.getEquipmentDescription());
