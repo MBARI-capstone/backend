@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RestController
@@ -37,23 +39,31 @@ public class ExpeditionController {
             UserEntity chiefSci = userRepository.findByUsername(ex.getUsername());
             UserEntity prinInv = userRepository.findByUsername(ex.getUsername());
 
+            LocalDateTime start =  LocalDateTime.of(ex.getStartYear(),ex.getStartMonth(),ex.getStartDay(),ex.getStartHour(),ex.getStartMin());
+            LocalDateTime end = LocalDateTime.of(ex.getEndYear(),ex.getEndMonth(),ex.getEndDay(),ex.getEndHour(),ex.getEndMin());
+
+            //LocalDateTime end = ex.getScheduledStartDatetime();
+
             newEx.setShipId(ship); //Set Ship
 
             newEx.setChiefScientist(chiefSci); //setChiefScientist
             newEx.setPrincipalInvestigator(prinInv); //setPrincipalInvestigator
 
+            newEx.setScheduledStartDatetime(start); //Scheduled Start time
+            newEx.setScheduledStartDatetime(end); //Scheduled End time
+
             newEx.setPurpose(ex.getPurpose());
-            newEx.setScheduledStartDatetime(ex.getScheduledStartDatetime());
-            newEx.setScheduledEndDatetime(ex.getScheduledEndDatetime());
-            newEx.setEquipmentDescription(ex.getEquipmentDescription());
+            newEx.setEquipmentDescription(ex.getEquipmentDesc());
             newEx.setParticipants(ex.getParticipants());
-            newEx.setRegionDescription(ex.getRegionDescription());
-            newEx.setPlannedTrackDescription(ex.getPlannedTrackDescription());
+            newEx.setRegionDescription(ex.getRegionDesc());
+            newEx.setPlannedTrackDescription(ex.getPlannedTrackDesc());
 
            ExpeditionEntity savedExped = ExpeditionRepository.save(newEx);
 
            return savedExped;
+
     }
+
     @PostMapping("/postexpedition")
     public ExpeditionEntity AddPostExpeditionReport(@RequestBody PostExpeditionDto ex){
         ExpeditionEntity newEx = new ExpeditionEntity();

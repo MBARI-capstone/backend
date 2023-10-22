@@ -10,11 +10,22 @@ public class PreExpeditionDto {
     private Integer shipId;
     private String shipName;
 
-
     //User Data
     private Integer userId;
     private String username;
 
+    //Date Time Date
+    private int startMin;
+    private int startHour;
+    private int startDay;
+    private int startMonth;
+    private int startYear;
+
+    private int endMin;
+    private int endHour;
+    private int endDay;
+    private int endMonth;
+    private int endYear;
     //Expedition/Scheduling Data
     private Integer expeditionId;
     private String purpose;

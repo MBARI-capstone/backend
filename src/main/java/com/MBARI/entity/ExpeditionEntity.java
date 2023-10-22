@@ -36,10 +36,10 @@ public class ExpeditionEntity {
     private UserEntity principalInvestigator;
 
     @Column(name = "scheduledStartDatetime", nullable = false)
-    private Calendar scheduledStartDatetime;
+    private LocalDateTime scheduledStartDatetime;
 
     @Column(name = "scheduledEndDatetime", nullable = false)
-    private Calendar scheduledEndDatetime;
+    private LocalDateTime scheduledEndDatetime;
 
     @Column(name = "equipmentDescription", nullable = false)
     private String equipmentDescription;
