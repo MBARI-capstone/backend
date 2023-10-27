@@ -7,15 +7,11 @@ import com.MBARI.entity.Ship;
 import com.MBARI.entity.UserEntity;
 import com.MBARI.repository.ExpeditionRepository;
 import com.MBARI.repository.UserRepository;
-import com.MBARI.repository.shipRepository;
+import com.MBARI.repository.ShipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1.1")
@@ -24,7 +20,7 @@ public class ExpeditionController {
     @Autowired
     ExpeditionRepository ExpeditionRepository;
     ExpeditionEntity ExpeditionEntity;
-    shipRepository shipRepository;
+    ShipRepository shipRepository;
     UserRepository userRepository;
     @PostMapping("/test")
     public void TestRequest() {
