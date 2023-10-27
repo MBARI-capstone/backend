@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -39,8 +40,8 @@ public class ExpeditionController {
             UserEntity chiefSci = userRepository.findByUsername(ex.getUsername());
             UserEntity prinInv = userRepository.findByUsername(ex.getUsername());
 
-            LocalDateTime start =  LocalDateTime.of(ex.getStartYear(),ex.getStartMonth(),ex.getStartDay(),ex.getStartHour(),ex.getStartMin());
-            LocalDateTime end = LocalDateTime.of(ex.getEndYear(),ex.getEndMonth(),ex.getEndDay(),ex.getEndHour(),ex.getEndMin());
+            LocalDate start =  LocalDate.of(ex.getStartYear(),ex.getStartMonth(),ex.getStartDay());//,ex.getStartHour(),ex.getStartMin());
+            LocalDate end = LocalDate.of(ex.getEndYear(),ex.getEndMonth(),ex.getEndDay());//,ex.getEndHour(),ex.getEndMin());
 
             //LocalDateTime end = ex.getScheduledStartDatetime();
 
@@ -68,15 +69,17 @@ public class ExpeditionController {
     public ExpeditionEntity AddPostExpeditionReport(@RequestBody PostExpeditionDto ex){
         ExpeditionEntity newEx = new ExpeditionEntity();
 
+        //LocalDateTime actualStart = new
         newEx.setActualStartDatetime(ex.getActualStartTime());
-        newEx.setActualEndDatetime(ex.getActualEndDatetime());
+      //  newEx.setActualEndDatetime(ex.getActualEndDatetime());
         newEx.setAccomplishments(ex.getAccomplishments());
         newEx.setScientistComments(ex.getScientistComments());
-        newEx.setSciObjectivesMet(ex.getSciObjectivesMet());
+       // newEx.setSciObjectivesMet(ex.getSciObjectivesMet());
         newEx.setOperatorComments(ex.getOperatorComments());
         newEx.setAllEquipmentFunctioned(ex.getAllEquipmentFunctioned());
         newEx.setOtherComments(ex.getOtherComments());
-        newEx.setUpdatedBy(ex.getUpdatedBy());
+        return null;
+      //  newEx.setUpdatedBy(ex.getUpdatedBy());
     }
 //    @GetMapping("/expedition_request")
 //    public ExpeditionDto RetrievePreExpeditionRequest(@RequestParam("expeditionId") Integer id){

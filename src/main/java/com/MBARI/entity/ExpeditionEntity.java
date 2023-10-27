@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 
@@ -32,14 +33,14 @@ public class ExpeditionEntity {
     private UserEntity chiefScientist;
 
     @ManyToOne()
-    @JoinColumn(name = "principalInvestigator")
+    @JoinColumn(name = "principalInvestigator")//ID?
     private UserEntity principalInvestigator;
 
     @Column(name = "scheduledStartDatetime", nullable = false)
-    private LocalDateTime scheduledStartDatetime;
+    private LocalDate scheduledStartDatetime;
 
     @Column(name = "scheduledEndDatetime", nullable = false)
-    private LocalDateTime scheduledEndDatetime;
+    private LocalDate scheduledEndDatetime;
 
     @Column(name = "equipmentDescription", nullable = false)
     private String equipmentDescription;
@@ -54,10 +55,10 @@ public class ExpeditionEntity {
     private String plannedTrackDescription;
 
     @Column(name = "actualStartDatetime", nullable = false)
-    private LocalDateTime actualStartDatetime;
+    private LocalDate actualStartDatetime;
 
     @Column(name = "actualEndDatetime", nullable = false)
-    private LocalDateTime actualEndDatetime;
+    private LocalDate actualEndDatetime;
 
     @Column(name = "accomplishments", nullable = false)
     private String accomplishments;

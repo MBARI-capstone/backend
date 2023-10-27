@@ -36,10 +36,10 @@ public class SecurityConfig {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests()
-                .antMatchers("/api/v1.1/auth/login").permitAll()
-                .anyRequest().authenticated()
-                .and()
+                //.authorizeRequests()
+                //.antMatchers("/api/").permitAll() //v1.1/auth/login
+                //.anyRequest().authenticated()
+                //.and()
                 .httpBasic();
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
