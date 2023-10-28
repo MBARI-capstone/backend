@@ -1,5 +1,6 @@
 package com.MBARI.controller;
 
+import com.MBARI.dto.ShipDto;
 import com.MBARI.dto.UserDto;
 import com.MBARI.entity.ShipEntity;
 import com.MBARI.service.ShipService;
@@ -26,8 +27,8 @@ public class DataController {
     }
 
     @GetMapping("/allShips")
-    public ResponseEntity<List<ShipEntity>> getAllShips() {
-        List<ShipEntity> ships = shipService.getAllShips();
+    public ResponseEntity<List<ShipDto>> getAllShips() {
+        List<ShipDto> ships = shipService.getAllShips();
         return new ResponseEntity<>(ships, HttpStatus.OK);
     }
 
