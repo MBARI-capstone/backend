@@ -40,6 +40,10 @@ public class AuthController {
         this.jwtGenerator = jwtGenerator;
     }
 
+    /**
+     * Register new user.
+     * If the username already exists, return error message.
+     */
     @PostMapping("register")
     public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
         if (userRepository.existsByUsername(registerDto.getUsername())) {
@@ -61,6 +65,10 @@ public class AuthController {
         return new ResponseEntity<>("User registered success", HttpStatus.OK);
     }
 
+    /**
+     * Login.
+     * If the username and password are correct, return JWT token
+     */
     @PostMapping("login")
     public ResponseEntity<AuthResponseDto> login(@RequestBody LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(

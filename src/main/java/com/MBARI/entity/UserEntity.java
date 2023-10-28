@@ -24,7 +24,7 @@ public class UserEntity {
     @Column(name = "emailAddress", unique = true, nullable = false)
     private String emailAddress;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "roleId")
     private RoleEntity role;
 

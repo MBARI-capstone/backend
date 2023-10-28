@@ -30,17 +30,16 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .exceptionHandling()
-                .authenticationEntryPoint(authEntryPoint)
+                .exceptionHandling().authenticationEntryPoint(authEntryPoint)
                 .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 //.authorizeRequests()
                 //.antMatchers("/api/").permitAll() //v1.1/auth/login
                 //.anyRequest().authenticated()
                 //.and()
                 .httpBasic();
+        // Before process request, JWT will be verified.
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
