@@ -1,6 +1,6 @@
 package com.MBARI.security;
 
-import com.MBARI.entity.Role;
+import com.MBARI.entity.RoleEntity;
 import com.MBARI.entity.UserEntity;
 import com.MBARI.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,15 +28,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username not found: " + username));
-        // ここのUserとUserEntityの関係性は
+        UserEntity user = userRepository.findByUsername(username);//.orElseThrow(() -> new UsernameNotFoundException("Username not found: " + username));
         return new User(user.getUsername(), user.getPassword(), mapRoleToAuthorities(user.getRole()));
     }
 
-    /**
-     * Mapping helper function for GrantedAuthority for Spring Security
-     */
-    private Collection<GrantedAuthority> mapRoleToAuthorities(Role role) {
+    private Collection<GrantedAuthority> mapRoleToAuthorities(RoleEntity role) {
         return Collections.singletonList(new SimpleGrantedAuthority(role.getRoleName()));
     }
 

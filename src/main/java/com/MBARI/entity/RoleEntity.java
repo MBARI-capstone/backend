@@ -1,5 +1,14 @@
 package com.MBARI.entity;
 
+
+
+
+
+
+
+
+
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,8 +24,8 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "roles")
-public class Role {
+@Table(name = "Roles")
+public class RoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "roleId")

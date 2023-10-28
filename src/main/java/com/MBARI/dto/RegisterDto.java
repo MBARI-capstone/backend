@@ -1,6 +1,5 @@
 package com.MBARI.dto;
 
-import com.MBARI.entity.Role;
 import lombok.Data;
 
 

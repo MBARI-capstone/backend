@@ -1,8 +1,8 @@
 package com.MBARI.repository;
 
-import com.MBARI.entity.Role;
+import com.MBARI.entity.RoleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RoleRepository extends JpaRepository<Role, Integer> {
-    Role findByRoleName(String roleName);
+public interface RoleRepository extends JpaRepository<RoleEntity, Integer> {
+    RoleEntity findByRoleName(String roleName);
 }
