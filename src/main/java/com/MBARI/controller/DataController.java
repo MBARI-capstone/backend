@@ -32,9 +32,9 @@ public class DataController {
         return new ResponseEntity<>(ships, HttpStatus.OK);
     }
 
-    @GetMapping("/allUsers")
-    public ResponseEntity<List<UserDto>> getAllUsers() {
-        List<UserDto> users = userService.getAllUsers();
+    @GetMapping("/allRegisteredUsers")
+    public ResponseEntity<List<UserDto>> getAllRegisteredUsers() {
+        List<UserDto> users = userService.getAllRegisteredUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
