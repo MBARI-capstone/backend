@@ -9,56 +9,54 @@ import com.MBARI.repository.ExpeditionRepository;
 import com.MBARI.repository.UserRepository;
 import com.MBARI.repository.ShipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
+import javax.transaction.Transactional;
 
 @RestController
 @RequestMapping("/api/v1.1")
 public class ExpeditionController {
 
-    @Autowired
-    ExpeditionRepository ExpeditionRepository;
-    ExpeditionEntity ExpeditionEntity;
+    ExpeditionRepository expeditionRepository;
     ShipRepository shipRepository;
     UserRepository userRepository;
-    @PostMapping("/test")
-    public void TestRequest() {
-        System.out.println("Testing PreExpedition Controller.");
+
+    @Autowired
+    public ExpeditionController(ExpeditionRepository expeditionRepository, ShipRepository shipRepository, UserRepository userRepository) {
+        this.expeditionRepository = expeditionRepository;
+        this.shipRepository = shipRepository;
+        this.userRepository = userRepository;
     }
 
-    @PostMapping("/preexpedition")
-    public ExpeditionEntity AddPreExpeditionRequest(  @RequestBody PreExpeditionDto ex){
-            ExpeditionEntity newEx = new ExpeditionEntity();
+    @PostMapping("/preExpedition")
+    @Transactional
+    public ResponseEntity<String> AddPreExpeditionRequest(@RequestBody PreExpeditionDto pre) {
+        ExpeditionEntity expeditionEntity = new ExpeditionEntity();
 
-            ShipEntity ship = shipRepository.findByShipName(ex.getShipName());
+        ShipEntity ship = shipRepository.findById(pre.getShipId()).orElse(null);
+        if (ship == null) return new ResponseEntity<>("No ship data", HttpStatus.BAD_REQUEST);
+        expeditionEntity.setShip(ship);
 
-            UserEntity chiefSci = userRepository.findByUsername(ex.getUsername());
-            UserEntity prinInv = userRepository.findByUsername(ex.getUsername());
+        expeditionEntity.setPurpose(pre.getPurpose());
 
-            LocalDate start =  LocalDate.of(ex.getStartYear(),ex.getStartMonth(),ex.getStartDay());//,ex.getStartHour(),ex.getStartMin());
-            LocalDate end = LocalDate.of(ex.getEndYear(),ex.getEndMonth(),ex.getEndDay());//,ex.getEndHour(),ex.getEndMin());
+        UserEntity chiefScientist = userRepository.findById(pre.getChiefScientistId()).orElse(null);
+        if (chiefScientist == null) return new ResponseEntity<>("No chief scientist data", HttpStatus.BAD_REQUEST);
+        expeditionEntity.setChiefScientist(chiefScientist);
 
-            //LocalDateTime end = ex.getScheduledStartDatetime();
+        UserEntity principalInvestigator = userRepository.findById(pre.getPrincipalInvestigatorId()).orElse(null);
+        if (principalInvestigator == null) return new ResponseEntity<>("No principal investigator data", HttpStatus.BAD_REQUEST);
+        expeditionEntity.setPrincipalInvestigator(principalInvestigator);
 
-            newEx.setShipId(ship); //Set Ship
+        expeditionEntity.setScheduledStartDate(pre.getScheduledStartDate());
+        expeditionEntity.setScheduledEndDate(pre.getScheduledEndDate());
+        expeditionEntity.setEquipmentDescription(pre.getEquipmentDescription());
+        expeditionEntity.setParticipants(pre.getParticipants());
+        expeditionEntity.setRegionDescription(pre.getRegionDescription());
+        expeditionEntity.setPlannedTrackDescription(pre.getPlannedTrackDescription());
 
-            newEx.setChiefScientist(chiefSci); //setChiefScientist
-            newEx.setPrincipalInvestigator(prinInv); //setPrincipalInvestigator
-
-            newEx.setScheduledStartDatetime(start); //Scheduled Start time
-            newEx.setScheduledStartDatetime(end); //Scheduled End time
-
-            newEx.setPurpose(ex.getPurpose());
-            newEx.setEquipmentDescription(ex.getEquipmentDesc());
-            newEx.setParticipants(ex.getParticipants());
-            newEx.setRegionDescription(ex.getRegionDesc());
-            newEx.setPlannedTrackDescription(ex.getPlannedTrackDesc());
-
-           ExpeditionEntity savedExped = ExpeditionRepository.save(newEx);
-
-           return savedExped;
-
+        expeditionRepository.save(expeditionEntity);
+        return new ResponseEntity<>("Expedition added successfully", HttpStatus.OK);
     }
 
     @PostMapping("/postexpedition")
@@ -66,7 +64,7 @@ public class ExpeditionController {
         ExpeditionEntity newEx = new ExpeditionEntity();
 
         //LocalDateTime actualStart = new
-        newEx.setActualStartDatetime(ex.getActualStartTime());
+//        newEx.setActualStartDatetime(ex.getActualStartTime());
       //  newEx.setActualEndDatetime(ex.getActualEndDatetime());
         newEx.setAccomplishments(ex.getAccomplishments());
         newEx.setScientistComments(ex.getScientistComments());

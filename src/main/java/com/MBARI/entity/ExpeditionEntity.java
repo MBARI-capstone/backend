@@ -20,60 +20,59 @@ public class ExpeditionEntity {
 
     @ManyToOne()
     @JoinColumn(name = "shipId")
-    private ShipEntity shipId;
+    private ShipEntity ship;
 
-    @Column(name = "purpose", nullable = false)
-    private String purpose;
-
-    //TODO Person Entity
     @ManyToOne()
     @JoinColumn(name = "chiefScientistId")
     private UserEntity chiefScientist;
 
     @ManyToOne()
-    @JoinColumn(name = "principalInvestigator")//ID?
+    @JoinColumn(name = "principalInvestigatorId")
     private UserEntity principalInvestigator;
 
-    @Column(name = "scheduledStartDatetime", nullable = false)
-    private LocalDate scheduledStartDatetime;
+    @Column(name = "purpose")
+    private String purpose;
 
-    @Column(name = "scheduledEndDatetime", nullable = false)
-    private LocalDate scheduledEndDatetime;
+    @Column(name = "scheduledStartDate")
+    private LocalDate scheduledStartDate;
 
-    @Column(name = "equipmentDescription", nullable = false)
+    @Column(name = "scheduledEndDate")
+    private LocalDate scheduledEndDate;
+
+    @Column(name = "equipmentDescription")
     private String equipmentDescription;
 
-    @Column(name = "participants", nullable = false)
+    @Column(name = "participants")
     private String participants;
 
-    @Column(name = "regionDescription", nullable = false)
+    @Column(name = "regionDescription")
     private String regionDescription;
 
-    @Column(name = "plannedTrackDescription", nullable = false)
+    @Column(name = "plannedTrackDescription")
     private String plannedTrackDescription;
 
-    @Column(name = "actualStartDatetime", nullable = false)
-    private LocalDate actualStartDatetime;
+    @Column(name = "actualStartDate")
+    private LocalDate actualStartDate;
 
-    @Column(name = "actualEndDatetime", nullable = false)
-    private LocalDate actualEndDatetime;
+    @Column(name = "actualEndDate")
+    private LocalDate actualEndDate;
 
-    @Column(name = "accomplishments", nullable = false)
+    @Column(name = "accomplishments")
     private String accomplishments;
 
-    @Column(name = "scientistComments", nullable = true)
+    @Column(name = "scientistComments")
     private String scientistComments;
 
-    @Column(name = "sciObjectivesMet", nullable = false)
+    @Column(name = "sciObjectivesMet")
     private Integer sciObjectivesMet;
 
-    @Column(name = "operatorComments", nullable = true)
+    @Column(name = "operatorComments")
     private String operatorComments;
 
-    @Column(name = "allEquipmentFunctioned", nullable = false)
+    @Column(name = "allEquipmentFunctioned")
     private Integer allEquipmentFunctioned;
 
-    @Column(name = "otherComments", nullable = true)
+    @Column(name = "otherComments")
     private String otherComments;
 
     @ManyToOne()
