@@ -3,12 +3,11 @@ package com.MBARI.controller;
 import com.MBARI.dto.AuthResponseDto;
 import com.MBARI.dto.LoginDto;
 import com.MBARI.dto.RegisterDto;
-import com.MBARI.entity.Role;
+import com.MBARI.entity.RoleEntity;
 import com.MBARI.entity.UserEntity;
 import com.MBARI.repository.RoleRepository;
 import com.MBARI.repository.UserRepository;
 import com.MBARI.security.JWTGenerator;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +49,7 @@ public class AuthController {
         user.setUsername(registerDto.getUsername());
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
 
-        Role role = roleRepository.findByRoleName(registerDto.getRoleName());
+        RoleEntity role = roleRepository.findByRoleName(registerDto.getRoleName());
         user.setRole(role);
 
         user.setFirstName(registerDto.getFirstName());

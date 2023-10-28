@@ -1,6 +1,6 @@
 package com.MBARI.security;
 
-import com.MBARI.entity.Role;
+import com.MBARI.entity.RoleEntity;
 import com.MBARI.entity.UserEntity;
 import com.MBARI.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new User(user.getUsername(), user.getPassword(), mapRoleToAuthorities(user.getRole()));
     }
 
-    private Collection<GrantedAuthority> mapRoleToAuthorities(Role role) {
+    private Collection<GrantedAuthority> mapRoleToAuthorities(RoleEntity role) {
         return Collections.singletonList(new SimpleGrantedAuthority(role.getRoleName()));
     }
 

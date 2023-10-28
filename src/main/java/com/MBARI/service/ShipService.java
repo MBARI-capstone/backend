@@ -1,6 +1,6 @@
 package com.MBARI.service;
 
-import com.MBARI.entity.Ship;
+import com.MBARI.entity.ShipEntity;
 import com.MBARI.repository.ShipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class ShipService {
         this.shipRepository = shipRepository;
     }
 
-    public List<Ship> getAllShips() {
+    public List<ShipEntity> getAllShips() {
         return shipRepository.findAll();
     }
 }

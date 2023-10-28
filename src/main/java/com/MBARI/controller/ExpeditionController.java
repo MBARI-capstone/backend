@@ -3,7 +3,7 @@ package com.MBARI.controller;
 import com.MBARI.dto.PreExpeditionDto;
 import com.MBARI.dto.PostExpeditionDto;
 import com.MBARI.entity.ExpeditionEntity;
-import com.MBARI.entity.Ship;
+import com.MBARI.entity.ShipEntity;
 import com.MBARI.entity.UserEntity;
 import com.MBARI.repository.ExpeditionRepository;
 import com.MBARI.repository.UserRepository;
@@ -31,7 +31,7 @@ public class ExpeditionController {
     public ExpeditionEntity AddPreExpeditionRequest(  @RequestBody PreExpeditionDto ex){
             ExpeditionEntity newEx = new ExpeditionEntity();
 
-            Ship ship = shipRepository.findByShipName(ex.getShipName());
+            ShipEntity ship = shipRepository.findByShipName(ex.getShipName());
 
             UserEntity chiefSci = userRepository.findByUsername(ex.getUsername());
             UserEntity prinInv = userRepository.findByUsername(ex.getUsername());

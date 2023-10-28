@@ -5,8 +5,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Calendar;
 
 
 @Data
@@ -22,7 +20,7 @@ public class ExpeditionEntity {
 
     @ManyToOne()
     @JoinColumn(name = "shipId")
-    private Ship shipId;
+    private ShipEntity shipId;
 
     @Column(name = "purpose", nullable = false)
     private String purpose;

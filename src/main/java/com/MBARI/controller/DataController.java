@@ -1,7 +1,9 @@
 package com.MBARI.controller;
 
-import com.MBARI.entity.Ship;
+import com.MBARI.dto.UserDto;
+import com.MBARI.entity.ShipEntity;
 import com.MBARI.service.ShipService;
+import com.MBARI.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,16 +17,24 @@ import java.util.List;
 @RequestMapping("/api/v1.1/data")
 public class DataController {
     private ShipService shipService;
+    private UserService userService;
 
     @Autowired
-    public DataController(ShipService shipService) {
+    public DataController(ShipService shipService, UserService userService) {
         this.shipService = shipService;
+        this.userService = userService;
     }
 
     @GetMapping("/allShips")
-    public ResponseEntity<List<Ship>> getAllShips() {
-        List<Ship> ships = shipService.getAllShips();
+    public ResponseEntity<List<ShipEntity>> getAllShips() {
+        List<ShipEntity> ships = shipService.getAllShips();
         return new ResponseEntity<>(ships, HttpStatus.OK);
+    }
+
+    @GetMapping("/allUsers")
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        List<UserDto> users = userService.getAllUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
 }
