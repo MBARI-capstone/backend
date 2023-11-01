@@ -3,64 +3,36 @@ package com.MBARI.controller;
 import com.MBARI.dto.PreExpeditionDto;
 import com.MBARI.dto.PostExpeditionDto;
 import com.MBARI.entity.ExpeditionEntity;
-import com.MBARI.entity.ShipEntity;
-import com.MBARI.entity.UserEntity;
-import com.MBARI.repository.ExpeditionRepository;
-import com.MBARI.repository.UserRepository;
-import com.MBARI.repository.ShipRepository;
+import com.MBARI.service.ExpeditionService;
+import com.MBARI.utils.MessageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import javax.transaction.Transactional;
 
 @RestController
 @RequestMapping("/api/v1.1")
 public class ExpeditionController {
 
-    ExpeditionRepository expeditionRepository;
-    ShipRepository shipRepository;
-    UserRepository userRepository;
+    private ExpeditionService expeditionService;
 
     @Autowired
-    public ExpeditionController(ExpeditionRepository expeditionRepository, ShipRepository shipRepository, UserRepository userRepository) {
-        this.expeditionRepository = expeditionRepository;
-        this.shipRepository = shipRepository;
-        this.userRepository = userRepository;
+    public ExpeditionController(ExpeditionService expeditionService) {
+        this.expeditionService = expeditionService;
     }
 
     @PostMapping("/preExpedition")
-    @Transactional
-    public ResponseEntity<String> AddPreExpeditionRequest(@RequestBody PreExpeditionDto pre) {
-        ExpeditionEntity expeditionEntity = new ExpeditionEntity();
-
-        ShipEntity ship = shipRepository.findById(pre.getShipId()).orElse(null);
-        if (ship == null) return new ResponseEntity<>("No ship data", HttpStatus.BAD_REQUEST);
-        expeditionEntity.setShip(ship);
-
-        expeditionEntity.setPurpose(pre.getPurpose());
-
-        UserEntity chiefScientist = userRepository.findById(pre.getChiefScientistId()).orElse(null);
-        if (chiefScientist == null) return new ResponseEntity<>("No chief scientist data", HttpStatus.BAD_REQUEST);
-        expeditionEntity.setChiefScientist(chiefScientist);
-
-        UserEntity principalInvestigator = userRepository.findById(pre.getPrincipalInvestigatorId()).orElse(null);
-        if (principalInvestigator == null) return new ResponseEntity<>("No principal investigator data", HttpStatus.BAD_REQUEST);
-        expeditionEntity.setPrincipalInvestigator(principalInvestigator);
-
-        expeditionEntity.setScheduledStartDate(pre.getScheduledStartDate());
-        expeditionEntity.setScheduledEndDate(pre.getScheduledEndDate());
-        expeditionEntity.setEquipmentDescription(pre.getEquipmentDescription());
-        expeditionEntity.setParticipants(pre.getParticipants());
-        expeditionEntity.setRegionDescription(pre.getRegionDescription());
-        expeditionEntity.setPlannedTrackDescription(pre.getPlannedTrackDescription());
-
-        expeditionRepository.save(expeditionEntity);
-        return new ResponseEntity<>("Expedition added successfully", HttpStatus.OK);
+    public ResponseEntity<String> addPreExpeditionRequest(@RequestBody PreExpeditionDto pre) {
+        String result = expeditionService.addPreExpedition(pre);
+        if (MessageUtils.EXPEDITION_ADDED_SUCCESSFULLY.equals(result)) {
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/postexpedition")
-    public ExpeditionEntity AddPostExpeditionReport(@RequestBody PostExpeditionDto ex){
+    public ExpeditionEntity addPostExpeditionReport(@RequestBody PostExpeditionDto ex){
         ExpeditionEntity newEx = new ExpeditionEntity();
 
         //LocalDateTime actualStart = new
@@ -80,4 +52,6 @@ public class ExpeditionController {
 //        //ExpeditionRepository.findbyID();
 //        return null;
 //    }
+
+
 }
