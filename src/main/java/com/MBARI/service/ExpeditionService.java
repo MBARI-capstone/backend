@@ -1,5 +1,6 @@
 package com.MBARI.service;
 
+import com.MBARI.dto.PostExpeditionDto;
 import com.MBARI.dto.PreExpeditionDto;
 import com.MBARI.entity.ExpeditionEntity;
 import com.MBARI.entity.ShipEntity;
@@ -55,6 +56,28 @@ public class ExpeditionService {
         expeditionEntity.setPlannedTrackDescription(pre.getPlannedTrackDescription());
 
         expeditionRepository.save(expeditionEntity);
+        return MessageUtils.EXPEDITION_ADDED_SUCCESSFULLY;
+    }
+    @Transactional
+    public String addPostExpedition(PostExpeditionDto post) {
+        ExpeditionEntity expeditionEntity = new ExpeditionEntity();
+
+        expeditionEntity.setScheduledStartDate(post.getActualStartTime());
+        expeditionEntity.setScheduledEndDate(post.getActualEndTime());
+        expeditionEntity.setAccomplishments(post.getAccomplishments());
+        expeditionEntity.setScientistComments(post.getScientistComments());
+        expeditionEntity.setSciObjectivesMet(post.getSciObjectiveMet());
+        expeditionEntity.setOperatorComments(post.getOperatorComments());
+        expeditionEntity.setAllEquipmentFunctioned(post.getAllEquipmentFunctioned());
+        expeditionEntity.setOperatorComments(post.getOperatorComments());
+
+        UserEntity updatedBy =userRepository.findById(post.getUpdatedBy()).orElse(null);
+        if (updatedBy == null) return MessageUtils.NO_UPDATED_BY;
+
+        expeditionEntity.setUpdatedBy(updatedBy);
+
+        expeditionRepository.save(expeditionEntity);
+
         return MessageUtils.EXPEDITION_ADDED_SUCCESSFULLY;
     }
 }

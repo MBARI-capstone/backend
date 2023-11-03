@@ -9,4 +9,7 @@ public class MessageUtils {
     public static final String NO_EXPEDITION_DATA = "No expedition data";
 
     public static final String NO_PRINCIPAL_INVESTIGATOR_DATA = "No principal investigator data";
+    public static final String NO_UPDATED_BY = "No MBARI Employee ID When Updating Post Cruise";
+
 }
+

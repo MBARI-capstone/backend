@@ -31,27 +31,14 @@ public class ExpeditionController {
         }
     }
 
-    @PostMapping("/postexpedition")
-    public ExpeditionEntity addPostExpeditionReport(@RequestBody PostExpeditionDto ex){
-        ExpeditionEntity newEx = new ExpeditionEntity();
-
-        //LocalDateTime actualStart = new
-//        newEx.setActualStartDatetime(ex.getActualStartTime());
-      //  newEx.setActualEndDatetime(ex.getActualEndDatetime());
-        newEx.setAccomplishments(ex.getAccomplishments());
-        newEx.setScientistComments(ex.getScientistComments());
-       // newEx.setSciObjectivesMet(ex.getSciObjectivesMet());
-        newEx.setOperatorComments(ex.getOperatorComments());
-        newEx.setAllEquipmentFunctioned(ex.getAllEquipmentFunctioned());
-        newEx.setOtherComments(ex.getOtherComments());
-        return null;
-      //  newEx.setUpdatedBy(ex.getUpdatedBy());
+    @PostMapping("/postExpedition")
+    public ResponseEntity<String> AddPostExpeditionReport(@RequestBody PostExpeditionDto post){
+        String result = expeditionService.addPostExpedition(post);
+        if (MessageUtils.EXPEDITION_ADDED_SUCCESSFULLY.equals(result)) {
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+        }
     }
-//    @GetMapping("/expedition_request")
-//    public ExpeditionDto RetrievePreExpeditionRequest(@RequestParam("expeditionId") Integer id){
-//        //ExpeditionRepository.findbyID();
-//        return null;
-//    }
-
 
 }
