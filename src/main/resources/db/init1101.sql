@@ -40,14 +40,14 @@ CREATE TABLE Expeditions (
                              purpose TEXT,
                              chiefScientistId INT,
                              principalInvestigatorId INT,
-                             scheduledStartDate DATETIME,
-                             scheduledEndDate DATETIME,
+                             scheduledStartDate DATE,
+                             scheduledEndDate DATE,
                              equipmentDescription TEXT,
                              participants TEXT,
                              regionDescription VARCHAR(2048),
                              plannedTrackDescription VARCHAR(6144),
-                             actualStartDate DATETIME,
-                             actualEndDate DATETIME,
+                             actualStartDate DATE,
+                             actualEndDate DATE,
                              accomplishments TEXT,
                              scientistComments TEXT,
                              sciObjectivesMet BOOLEAN,
@@ -96,8 +96,8 @@ INSERT INTO Ships (shipName, shipDescription) VALUES
 
 -- Insert data into Expeditions table
 INSERT INTO Expeditions (shipId, purpose, chiefScientistId, principalInvestigatorId, scheduledStartDate, scheduledEndDate, equipmentDescription, participants, regionDescription, plannedTrackDescription) VALUES
-                                                                                                                                                                                                               (1, 'Deep sea exploration', 2, 1, '2023-11-01 00:00:00', '2023-11-15 00:00:00', 'ROV, Sonar, Deep-sea camera', 'John Doe, Jane Smith, Richard Roe', 'Pacific Ocean, near Mariana Trench', 'Starting from point A, moving towards point B, then deep diving at point C'),
-                                                                                                                                                                                                               (2, 'Marine biology research', 3, 2, '2023-12-01 00:00:00', '2023-12-15 00:00:00', 'Submersibles, Diving equipment, Sampling tools', 'Alice Brown, Bob Jones', 'Atlantic Ocean, near the Bermuda Triangle', 'Surveying coral reefs and collecting samples');
+                                                                                                                                                                                                               (1, 'Deep sea exploration', 2, 1, '2023-11-01', '2023-11-15', 'ROV, Sonar, Deep-sea camera', 'John Doe, Jane Smith, Richard Roe', 'Pacific Ocean, near Mariana Trench', 'Starting from point A, moving towards point B, then deep diving at point C'),
+                                                                                                                                                                                                               (2, 'Marine biology research', 3, 2, '2023-12-01', '2023-12-15', 'Submersibles, Diving equipment, Sampling tools', 'Alice Brown, Bob Jones', 'Atlantic Ocean, near the Bermuda Triangle', 'Surveying coral reefs and collecting samples');
 
 -- Insert data into ROVDives table
 INSERT INTO ROVDives (expeditionId, rovName, diveNumber, diveStartDatetime, diveEndDatetime, diveChiefScientistId, briefAccomplishments) VALUES
