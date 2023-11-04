@@ -3,21 +3,17 @@ package com.MBARI.dto;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Data
 public class PostExpeditionDto {
-
-    private LocalDate actualStartTime;
-    private LocalDate actualEndTime;
-
+    private Integer expeditionId;
+    private LocalDate actualStartDate;
+    private LocalDate actualEndDate;
     private String accomplishments;
     private String scientistComments;
-    private Integer sciObjectiveMet;
+    private Boolean sciObjectivesMet;
     private String operatorComments;
-    private Integer allEquipmentFunctioned;
+    private Boolean allEquipmentFunctioned;
     private String otherComments;
     private Integer updatedBy;
-
-
 }

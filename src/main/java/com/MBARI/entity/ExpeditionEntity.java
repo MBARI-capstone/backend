@@ -64,13 +64,13 @@ public class ExpeditionEntity {
     private String scientistComments;
 
     @Column(name = "sciObjectivesMet")
-    private Integer sciObjectivesMet;
+    private Boolean sciObjectivesMet;
 
     @Column(name = "operatorComments")
     private String operatorComments;
 
     @Column(name = "allEquipmentFunctioned")
-    private Integer allEquipmentFunctioned;
+    private Boolean allEquipmentFunctioned;
 
     @Column(name = "otherComments")
     private String otherComments;

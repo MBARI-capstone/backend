@@ -2,7 +2,6 @@ package com.MBARI.controller;
 
 import com.MBARI.dto.PreExpeditionDto;
 import com.MBARI.dto.PostExpeditionDto;
-import com.MBARI.entity.ExpeditionEntity;
 import com.MBARI.service.ExpeditionService;
 import com.MBARI.utils.MessageUtils;
 import org.springframework.beans.factory.annotation.Autowired;

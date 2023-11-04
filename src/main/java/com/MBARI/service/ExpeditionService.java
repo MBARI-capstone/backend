@@ -60,20 +60,20 @@ public class ExpeditionService {
     }
     @Transactional
     public String addPostExpedition(PostExpeditionDto post) {
-        ExpeditionEntity expeditionEntity = new ExpeditionEntity();
+        ExpeditionEntity expeditionEntity = expeditionRepository.findById(post.getExpeditionId()).orElse(null);
+        if (expeditionEntity == null) return MessageUtils.NO_EXPEDITION_DATA;
 
-        expeditionEntity.setScheduledStartDate(post.getActualStartTime());
-        expeditionEntity.setScheduledEndDate(post.getActualEndTime());
+        expeditionEntity.setActualStartDate(post.getActualStartDate());
+        expeditionEntity.setActualEndDate(post.getActualEndDate());
         expeditionEntity.setAccomplishments(post.getAccomplishments());
         expeditionEntity.setScientistComments(post.getScientistComments());
-        expeditionEntity.setSciObjectivesMet(post.getSciObjectiveMet());
+        expeditionEntity.setSciObjectivesMet(post.getSciObjectivesMet());
         expeditionEntity.setOperatorComments(post.getOperatorComments());
         expeditionEntity.setAllEquipmentFunctioned(post.getAllEquipmentFunctioned());
-        expeditionEntity.setOperatorComments(post.getOperatorComments());
+        expeditionEntity.setOtherComments(post.getOperatorComments());
 
-        UserEntity updatedBy =userRepository.findById(post.getUpdatedBy()).orElse(null);
+        UserEntity updatedBy = userRepository.findById(post.getUpdatedBy()).orElse(null);
         if (updatedBy == null) return MessageUtils.NO_UPDATED_BY;
-
         expeditionEntity.setUpdatedBy(updatedBy);
 
         expeditionRepository.save(expeditionEntity);
