@@ -70,7 +70,7 @@ public class ExpeditionService {
         expeditionEntity.setSciObjectivesMet(post.getSciObjectivesMet());
         expeditionEntity.setOperatorComments(post.getOperatorComments());
         expeditionEntity.setAllEquipmentFunctioned(post.getAllEquipmentFunctioned());
-        expeditionEntity.setOtherComments(post.getOperatorComments());
+        expeditionEntity.setOtherComments(post.getOtherComments());
 
         UserEntity updatedBy = userRepository.findById(post.getUpdatedBy()).orElse(null);
         if (updatedBy == null) return MessageUtils.NO_UPDATED_BY;
