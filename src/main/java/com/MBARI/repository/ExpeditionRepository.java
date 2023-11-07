@@ -11,6 +11,7 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.JoinType;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,18 +70,26 @@ public interface ExpeditionRepository extends JpaRepository<ExpeditionEntity, In
             }
 
             if (dto.getDiveStartDate() != null) {
-                Expression<LocalDate> diveStartDate = cb.function(
-                        "DATE", LocalDate.class, rovDiveJoin.get("diveStartDatetime")
+                LocalDateTime startOfDay = dto.getDiveStartDate().atStartOfDay();
+                LocalDateTime endOfDay = dto.getDiveStartDate().plusDays(1).atStartOfDay();
+
+                Predicate rovDivePredicate = cb.between(
+                        rovDiveJoin.get("diveStartDatetime"),
+                        startOfDay,
+                        endOfDay
                 );
-                Predicate rovDivePredicate = cb.equal(diveStartDate, dto.getDiveStartDate());
                 predicates.add(rovDivePredicate);
             }
 
             if (dto.getDiveEndDate() != null) {
-                Expression<LocalDate> diveEndDate = cb.function(
-                        "DATE", LocalDate.class, rovDiveJoin.get("diveEndDatetime")
+                LocalDateTime startOfDay = dto.getDiveEndDate().atStartOfDay();
+                LocalDateTime endOfDay = dto.getDiveEndDate().plusDays(1).atStartOfDay();
+
+                Predicate rovDivePredicate = cb.between(
+                        rovDiveJoin.get("diveEndDatetime"),
+                        startOfDay,
+                        endOfDay
                 );
-                Predicate rovDivePredicate = cb.equal(diveEndDate, dto.getDiveEndDate());
                 predicates.add(rovDivePredicate);
             }
 

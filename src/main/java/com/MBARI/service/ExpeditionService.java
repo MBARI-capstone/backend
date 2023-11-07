@@ -1,8 +1,8 @@
 package com.MBARI.service;
 
-import com.MBARI.dto.PostExpeditionDto;
-import com.MBARI.dto.PreExpeditionDto;
+import com.MBARI.dto.*;
 import com.MBARI.entity.ExpeditionEntity;
+import com.MBARI.entity.RovDiveEntity;
 import com.MBARI.entity.ShipEntity;
 import com.MBARI.entity.UserEntity;
 import com.MBARI.repository.ExpeditionRepository;
@@ -13,17 +13,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ExpeditionService {
 
-    @Autowired
     private ShipRepository shipRepository;
-    @Autowired
     private UserRepository userRepository;
-    @Autowired
     private ExpeditionRepository expeditionRepository;
 
+    @Autowired
     public ExpeditionService(ShipRepository shipRepository, UserRepository userRepository, ExpeditionRepository expeditionRepository) {
         this.shipRepository = shipRepository;
         this.userRepository = userRepository;
@@ -79,5 +79,57 @@ public class ExpeditionService {
         expeditionRepository.save(expeditionEntity);
 
         return MessageUtils.EXPEDITION_ADDED_SUCCESSFULLY;
+    }
+
+    @Transactional
+    public List<ResponseExpeditionDiveDto> searchExpeditions(SearchDto searchDto) {
+        List<ExpeditionEntity> expeditionEntities = expeditionRepository.search(searchDto);
+
+        if (expeditionEntities.isEmpty()) return new ArrayList<>();
+
+        List<ResponseExpeditionDiveDto> responseList = new ArrayList<>();
+
+        for (ExpeditionEntity expeditionEntity : expeditionEntities) {
+            ResponseExpeditionDiveDto dto = new ResponseExpeditionDiveDto();
+            dto.setExpeditionId(expeditionEntity.getExpeditionId());
+            dto.setShipName(expeditionEntity.getShip().getShipName());
+            dto.setExpeditionChiefScientistName(expeditionEntity.getChiefScientist().getFirstName() + " " + expeditionEntity.getChiefScientist().getLastName());
+            dto.setPrincipalInvestigatorName(expeditionEntity.getPrincipalInvestigator().getFirstName() + " " + expeditionEntity.getPrincipalInvestigator().getLastName());
+            dto.setPurpose(expeditionEntity.getPurpose());
+            dto.setScheduledStartDate(expeditionEntity.getScheduledStartDate());
+            dto.setScheduledEndDate(expeditionEntity.getScheduledEndDate());
+            dto.setEquipmentDescription(expeditionEntity.getEquipmentDescription());
+            dto.setParticipants(expeditionEntity.getParticipants());
+            dto.setRegionDescription(expeditionEntity.getRegionDescription());
+            dto.setPlannedTrackDescription(expeditionEntity.getPlannedTrackDescription());
+            dto.setActualStartDate(expeditionEntity.getActualStartDate());
+            dto.setActualEndDate(expeditionEntity.getActualEndDate());
+            dto.setAccomplishments(expeditionEntity.getAccomplishments());
+            dto.setScientistComments(expeditionEntity.getScientistComments());
+            dto.setSciObjectivesMet(expeditionEntity.getSciObjectivesMet());
+            dto.setOperatorComments(expeditionEntity.getOperatorComments());
+            dto.setAllEquipmentFunctioned(expeditionEntity.getAllEquipmentFunctioned());
+            dto.setOtherComments(expeditionEntity.getOtherComments());
+            if (expeditionEntity.getUpdatedBy() != null) {
+                dto.setUpdatedByUserName(expeditionEntity.getUpdatedBy().getFirstName() + " " + expeditionEntity.getUpdatedBy().getLastName());
+            }
+
+            List<ResponseRovDiveDto> rovDiveDtos = new ArrayList<>();
+            for (RovDiveEntity rovDiveEntity : expeditionEntity.getRovDives()) {
+                ResponseRovDiveDto responseRovDiveDto = new ResponseRovDiveDto();
+                responseRovDiveDto.setRovName(rovDiveEntity.getRovName());
+                responseRovDiveDto.setDiveNumber(rovDiveEntity.getDiveNumber());
+                responseRovDiveDto.setDiveStartDatetime(rovDiveEntity.getDiveStartDatetime());
+                responseRovDiveDto.setDiveEndDatetime(rovDiveEntity.getDiveEndDatetime());
+                responseRovDiveDto.setDiveChiefScientistName(rovDiveEntity.getDiveChiefScientist().getFirstName() + " " + rovDiveEntity.getDiveChiefScientist().getLastName());
+                responseRovDiveDto.setBriefAccomplishments(rovDiveEntity.getBriefAccomplishments());
+
+                rovDiveDtos.add(responseRovDiveDto);
+            }
+
+            dto.setRovDives(rovDiveDtos);
+            responseList.add(dto);
+        }
+        return responseList;
     }
 }
