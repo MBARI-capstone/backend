@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Data
@@ -12,6 +13,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Table(name="Expeditions")
 public class ExpeditionEntity {
+
+    // TODO: we need status like APPROVE, PENDING, COMPLETED
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -78,4 +81,8 @@ public class ExpeditionEntity {
     @ManyToOne()
     @JoinColumn(name = "updatedBy")
     private UserEntity updatedBy;
+
+    @OneToMany(mappedBy = "relatedExpedition", fetch = FetchType.LAZY)
+    private List<RovDiveEntity> rovDives;
+
 }

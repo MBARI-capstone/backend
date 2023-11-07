@@ -5,12 +5,18 @@ import java.time.LocalDate;
 @Data
 public class SearchDto {
     private Integer shipId;
-    private Integer chiefScientistId;
+    private Integer expeditionChiefScientistId;
     private Integer principalInvestigatorId;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private Integer sequenceNumber;
+    private LocalDate expeditionStartDate;
+    private LocalDate expeditionEndDate;
+    private Integer expeditionSequenceNumber;
+    private Boolean sciObjectivesMet;
+    private Boolean allEquipmentFunctioned;
+
     private String diveNumber;
-//    private String status;
+    private Integer diveChiefScientistId;
+    private LocalDate diveStartDate;
+    private LocalDate diveEndDate;
+
     private String keyword;
 }
