@@ -24,7 +24,7 @@ public class UserService {
 
         // only take MBARI Employee
         for (int i = 0; i < userEntityList.size(); i++) {
-            if (userEntityList.get(i).getRole().getRoleName().equals("MBARI Employee")) {
+            if (userEntityList.get(i).getRole().getRoleName().equals("Registered User")) {
                 userDtoList.add(UserDto.userEntityToUserDto(userEntityList.get(i)));
             }
         }
