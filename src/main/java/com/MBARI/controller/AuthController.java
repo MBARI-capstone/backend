@@ -1,8 +1,6 @@
 package com.MBARI.controller;
 
-import com.MBARI.dto.AuthResponseDto;
-import com.MBARI.dto.LoginDto;
-import com.MBARI.dto.RegisterDto;
+import com.MBARI.dto.*;
 import com.MBARI.entity.RoleEntity;
 import com.MBARI.entity.UserEntity;
 import com.MBARI.repository.RoleRepository;
@@ -15,11 +13,17 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.GrantedAuthority;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1.1/auth")
@@ -67,15 +71,79 @@ public class AuthController {
 
     /**
      * Login.
-     * If the username and password are correct, return JWT token
+     * If the username and password are correct, set Tokens in cookie.
      */
     @PostMapping("login")
-    public ResponseEntity<AuthResponseDto> login(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(),
                         loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = jwtGenerator.generateToken(authentication);
-        return new ResponseEntity<>(new AuthResponseDto(token), HttpStatus.OK);
+        TokenDto tokens = jwtGenerator.generateToken(authentication);
+
+        Cookie accessTokenCookie = new Cookie("accessToken", tokens.getAccessToken());
+        accessTokenCookie.setHttpOnly(true);
+        //accessTokenCookie.setSecure(true); // HTTPS
+        accessTokenCookie.setPath("/");
+        response.addCookie(accessTokenCookie);
+
+        Cookie refreshTokenCookie = new Cookie("refreshToken", tokens.getRefreshToken());
+        refreshTokenCookie.setHttpOnly(true);
+        //refreshTokenCookie.setSecure(true); // HTTPS
+        refreshTokenCookie.setPath("/");
+        response.addCookie(refreshTokenCookie);
+
+        if (authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            String username = userDetails.getUsername();
+            String role = userDetails.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.joining(", "));
+
+            LoginResponse loginResponse = new LoginResponse();
+            System.out.println(username + " "  + role);
+            loginResponse.setUsername(username);
+            loginResponse.setRole(role);
+
+            return new ResponseEntity<>(loginResponse, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<LoginResponse> logout(HttpServletResponse response) {
+        // 既存のトークンをクリアするために新しいCookieを作成
+        Cookie accessTokenCookie = new Cookie("accessToken", null);
+        accessTokenCookie.setMaxAge(0); // 有効期限を0に設定
+        //accessTokenCookie.setHttpOnly(true);
+        accessTokenCookie.setPath("/");
+        response.addCookie(accessTokenCookie);
+
+        Cookie refreshTokenCookie = new Cookie("refreshToken", null);
+        refreshTokenCookie.setMaxAge(0); // 有効期限を0に設定
+        //refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setPath("/");
+        response.addCookie(refreshTokenCookie);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/token/refresh")
+    public ResponseEntity<TokenDto> refreshAccessToken(HttpServletRequest request) {
+        String refreshToken = request.getHeader("Refresh-Token");
+        if (refreshToken != null && jwtGenerator.validateToken(refreshToken)) {
+            String username = jwtGenerator.getUsernameFromJWT(refreshToken);
+            // Assuming we have a method to authenticate by username without password
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, null);
+            // Assume that we set the authentication in the context here to use it in generateToken
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            TokenDto newTokens = jwtGenerator.generateToken(authenticationToken);
+            return ResponseEntity.ok(newTokens);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 }

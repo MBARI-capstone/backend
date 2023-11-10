@@ -2,7 +2,6 @@ package com.MBARI.controller;
 
 import com.MBARI.dto.ShipDto;
 import com.MBARI.dto.UserDto;
-import com.MBARI.entity.ShipEntity;
 import com.MBARI.service.ShipService;
 import com.MBARI.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
