@@ -18,15 +18,12 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<UserDto> getAllRegisteredUsers() {
+    public List<UserDto> getAllUsers() {
         List<UserEntity> userEntityList = userRepository.findAll();
         List<UserDto> userDtoList = new ArrayList<>();
 
-        // only take Registered User
-        for (int i = 0; i < userEntityList.size(); i++) {
-            if (userEntityList.get(i).getRole().getRoleName().equals("Registered User")) {
-                userDtoList.add(UserDto.userEntityToUserDto(userEntityList.get(i)));
-            }
+        for (UserEntity userEntity : userEntityList) {
+            userDtoList.add(UserDto.userEntityToUserDto(userEntity));
         }
         return userDtoList;
     }

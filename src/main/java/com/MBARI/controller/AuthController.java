@@ -15,10 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.GrantedAuthority;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -115,15 +112,14 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<LoginResponse> logout(HttpServletResponse response) {
-        // 既存のトークンをクリアするために新しいCookieを作成
         Cookie accessTokenCookie = new Cookie("accessToken", null);
-        accessTokenCookie.setMaxAge(0); // 有効期限を0に設定
+        accessTokenCookie.setMaxAge(0);
         //accessTokenCookie.setHttpOnly(true);
         accessTokenCookie.setPath("/");
         response.addCookie(accessTokenCookie);
 
         Cookie refreshTokenCookie = new Cookie("refreshToken", null);
-        refreshTokenCookie.setMaxAge(0); // 有効期限を0に設定
+        refreshTokenCookie.setMaxAge(0);
         //refreshTokenCookie.setHttpOnly(true);
         refreshTokenCookie.setPath("/");
         response.addCookie(refreshTokenCookie);

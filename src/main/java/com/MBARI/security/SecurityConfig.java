@@ -29,13 +29,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .cors()
+                .and()
                 .csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(authEntryPoint)
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/v1.1/auth/login").permitAll()
+                .antMatchers("/api/v1.1/auth/login", "/api/v1.1/auth/logout").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
