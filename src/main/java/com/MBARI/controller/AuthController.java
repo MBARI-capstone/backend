@@ -17,6 +17,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.web.util.WebUtils;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -106,8 +108,6 @@ public class AuthController {
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
-
     }
 
     @PostMapping("/logout")
@@ -127,17 +127,58 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/token/refresh")
-    public ResponseEntity<TokenDto> refreshAccessToken(HttpServletRequest request) {
-        String refreshToken = request.getHeader("Refresh-Token");
-        if (refreshToken != null && jwtGenerator.validateToken(refreshToken)) {
-            String username = jwtGenerator.getUsernameFromJWT(refreshToken);
-            // Assuming we have a method to authenticate by username without password
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, null);
-            // Assume that we set the authentication in the context here to use it in generateToken
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            TokenDto newTokens = jwtGenerator.generateToken(authenticationToken);
-            return ResponseEntity.ok(newTokens);
+//    @PostMapping("/token/refresh")
+//    public ResponseEntity<TokenDto> refreshAccessToken(HttpServletRequest request) {
+//        String refreshToken = request.getHeader("Refresh-Token");
+//        if (refreshToken != null && jwtGenerator.validateToken(refreshToken)) {
+//            String username = jwtGenerator.getUsernameFromJWT(refreshToken);
+//            // Assuming we have a method to authenticate by username without password
+//            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, null);
+//            // Assume that we set the authentication in the context here to use it in generateToken
+//            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+//            TokenDto newTokens = jwtGenerator.generateToken(authenticationToken);
+//            return ResponseEntity.ok(newTokens);
+//        } else {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+//        }
+//    }
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refreshAccessToken(HttpServletRequest request, HttpServletResponse response) {
+        Cookie refreshTokenCookie = WebUtils.getCookie(request, "refreshToken");
+
+        if (refreshTokenCookie == null || !jwtGenerator.validateToken(refreshTokenCookie.getValue())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        String newAccessToken = jwtGenerator.refreshAccessToken(refreshTokenCookie.getValue());
+
+        Cookie newAccessTokenCookie = new Cookie("accessToken", newAccessToken);
+        newAccessTokenCookie.setHttpOnly(true);
+        newAccessTokenCookie.setPath("/");
+        // newAccessTokenCookie.setSecure(true);
+        response.addCookie(newAccessTokenCookie);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/userRole")
+    public ResponseEntity<LoginResponse> getUserRole() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            String username = userDetails.getUsername();
+            String role = userDetails.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.joining(", "));
+
+
+            LoginResponse loginResponse = new LoginResponse();
+            System.out.println(username + " "  + role);
+            loginResponse.setUsername(username);
+            loginResponse.setRole(role);
+
+            return ResponseEntity.ok(loginResponse);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

@@ -45,6 +45,20 @@ public class JWTGenerator {
         return tokens;
     }
 
+    public String refreshAccessToken(String refreshToken) {
+        String username = getUsernameFromJWT(refreshToken);
+        Date currentDate = new Date();
+        Date accessExpireDate = new Date(currentDate.getTime() + SecurityConstants.ACCESS_TOKEN_EXPIRATION);
+
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(currentDate)
+                .setExpiration(accessExpireDate)
+                .signWith(key, SignatureAlgorithm.HS512)
+                .compact();
+    }
+
+
     public String getUsernameFromJWT(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)
