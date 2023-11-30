@@ -92,6 +92,30 @@ public class ExpeditionService {
         return MessageUtils.EXPEDITION_MODIFIED_SUCCESSFULLY;
     }
 
+    public List<ApprovedPreExpeditionDto> getAllApprovedPreExpeditions() {
+        List<ExpeditionEntity> expeditionEntities = expeditionRepository.findAll();
+        List<ApprovedPreExpeditionDto> approvedPreExpeditionDtos = new ArrayList<>();
+        for (ExpeditionEntity expeditionEntity: expeditionEntities) {
+            if (expeditionEntity.getIsPreApproved() && expeditionEntity.getActualStartDate() == null) {
+                ApprovedPreExpeditionDto dto = new ApprovedPreExpeditionDto();
+                dto.setExpeditionId(expeditionEntity.getExpeditionId());
+                dto.setShipName(expeditionEntity.getShip().getShipName());
+                dto.setChiefScientistName(expeditionEntity.getChiefScientist().getFirstName() + " " + expeditionEntity.getChiefScientist().getLastName());
+                dto.setPrincipalInvestigatorName(expeditionEntity.getPrincipalInvestigator().getFirstName() + " " + expeditionEntity.getChiefScientist().getLastName());
+                dto.setPurpose(expeditionEntity.getPurpose());
+                dto.setScheduledStartDate(expeditionEntity.getScheduledStartDate());
+                dto.setScheduledEndDate(expeditionEntity.getScheduledEndDate());
+                dto.setEquipmentDescription(expeditionEntity.getEquipmentDescription());
+                dto.setParticipants(expeditionEntity.getParticipants());
+                dto.setRegionDescription(expeditionEntity.getRegionDescription());
+                dto.setPlannedTrackDescription(expeditionEntity.getPlannedTrackDescription());
+
+                approvedPreExpeditionDtos.add(dto);
+            }
+        }
+        return approvedPreExpeditionDtos;
+    }
+
     @Transactional
     public String addPostExpedition(PostExpeditionDto post) {
         ExpeditionEntity expeditionEntity = expeditionRepository.findById(post.getExpeditionId()).orElse(null);

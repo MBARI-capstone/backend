@@ -32,7 +32,7 @@ public class ExpeditionController {
     }
 
     @GetMapping("/preExpedition/unapproved")
-    public ResponseEntity<List<UnApprovedPreExpeditionDto>> unapprovedPreExpedition() {
+    public ResponseEntity<List<UnApprovedPreExpeditionDto>> unapprovedPreExpeditions() {
         List<UnApprovedPreExpeditionDto> expeditionDtos = expeditionService.getUnApprovedPreExpeditions();
         return new ResponseEntity<>(expeditionDtos, HttpStatus.OK);
     }
@@ -45,6 +45,12 @@ public class ExpeditionController {
         } else {
             return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/preExpedition/approved")
+    public ResponseEntity<List<ApprovedPreExpeditionDto>> approvedPreExpeditions() {
+        List<ApprovedPreExpeditionDto> expeditionDtos = expeditionService.getAllApprovedPreExpeditions();
+        return new ResponseEntity<>(expeditionDtos, HttpStatus.OK);
     }
 
 
