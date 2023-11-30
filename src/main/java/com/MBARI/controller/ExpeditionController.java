@@ -1,12 +1,8 @@
 package com.MBARI.controller;
 
-import com.MBARI.dto.PreExpeditionDto;
-import com.MBARI.dto.PostExpeditionDto;
-import com.MBARI.dto.ResponseExpeditionDiveDto;
-import com.MBARI.dto.SearchDto;
+import com.MBARI.dto.*;
 import com.MBARI.service.ExpeditionService;
 import com.MBARI.utils.MessageUtils;
-import org.aspectj.bridge.MessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +30,23 @@ public class ExpeditionController {
             return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/preExpedition/unapproved")
+    public ResponseEntity<List<UnApprovedPreExpeditionDto>> unapprovedPreExpedition() {
+        List<UnApprovedPreExpeditionDto> expeditionDtos = expeditionService.getUnApprovedPreExpeditions();
+        return new ResponseEntity<>(expeditionDtos, HttpStatus.OK);
+    }
+
+    @PostMapping("/preExpedition/approve")
+    public ResponseEntity<?> approveExpedition(@RequestBody Integer expeditionId) {
+        String result = expeditionService.approvePreExpedition(expeditionId);
+        if (MessageUtils.EXPEDITION_MODIFIED_SUCCESSFULLY.equals(result)) {
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
     @PostMapping("/postExpedition")
     public ResponseEntity<String> addPostExpeditionReport(@RequestBody PostExpeditionDto post){

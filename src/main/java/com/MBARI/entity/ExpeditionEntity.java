@@ -54,6 +54,9 @@ public class ExpeditionEntity {
     @Column(name = "plannedTrackDescription")
     private String plannedTrackDescription;
 
+    @Column(name = "isPreApproved")
+    private Boolean isPreApproved;
+
     @Column(name = "actualStartDate")
     private LocalDate actualStartDate;
 

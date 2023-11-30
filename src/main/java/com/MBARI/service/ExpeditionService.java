@@ -10,6 +10,7 @@ import com.MBARI.repository.ShipRepository;
 import com.MBARI.repository.UserRepository;
 import com.MBARI.utils.MessageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -58,6 +59,39 @@ public class ExpeditionService {
         expeditionRepository.save(expeditionEntity);
         return MessageUtils.EXPEDITION_ADDED_SUCCESSFULLY;
     }
+
+    public List<UnApprovedPreExpeditionDto> getUnApprovedPreExpeditions() {
+        List<ExpeditionEntity> expeditionEntities = expeditionRepository.findAll();
+        List<UnApprovedPreExpeditionDto> unApprovedPreExpeditionDtos = new ArrayList<>();
+        for (ExpeditionEntity expeditionEntity: expeditionEntities) {
+            if (!expeditionEntity.getIsPreApproved()) {
+                UnApprovedPreExpeditionDto dto = new UnApprovedPreExpeditionDto();
+                dto.setExpeditionId(expeditionEntity.getExpeditionId());
+                dto.setShipId(expeditionEntity.getShip() != null ? expeditionEntity.getShip().getShipId() : null);
+                dto.setChiefScientistId(expeditionEntity.getChiefScientist() != null ? expeditionEntity.getChiefScientist().getUserId() : null);
+                dto.setPrincipalInvestigatorId(expeditionEntity.getPrincipalInvestigator() != null ? expeditionEntity.getPrincipalInvestigator().getUserId() : null);
+                dto.setPurpose(expeditionEntity.getPurpose());
+                dto.setScheduledStartDate(expeditionEntity.getScheduledStartDate());
+                dto.setScheduledEndDate(expeditionEntity.getScheduledEndDate());
+                dto.setEquipmentDescription(expeditionEntity.getEquipmentDescription());
+                dto.setParticipants(expeditionEntity.getParticipants());
+                dto.setRegionDescription(expeditionEntity.getRegionDescription());
+                dto.setPlannedTrackDescription(expeditionEntity.getPlannedTrackDescription());
+
+                unApprovedPreExpeditionDtos.add(dto);
+            }
+        }
+        return unApprovedPreExpeditionDtos;
+    }
+
+    public String approvePreExpedition(Integer expeditionId) {
+        ExpeditionEntity expedition = expeditionRepository.findById(expeditionId).orElseThrow(null);
+        if (expedition == null) return MessageUtils.NO_EXPEDITION_DATA;
+        expedition.setIsPreApproved(true);
+        expeditionRepository.save(expedition);
+        return MessageUtils.EXPEDITION_MODIFIED_SUCCESSFULLY;
+    }
+
     @Transactional
     public String addPostExpedition(PostExpeditionDto post) {
         ExpeditionEntity expeditionEntity = expeditionRepository.findById(post.getExpeditionId()).orElse(null);

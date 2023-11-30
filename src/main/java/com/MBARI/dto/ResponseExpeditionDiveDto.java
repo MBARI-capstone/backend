@@ -20,6 +20,7 @@ public class ResponseExpeditionDiveDto {
     private String participants;
     private String regionDescription;
     private String plannedTrackDescription;
+    private Boolean isPreApproved;
     private LocalDate actualStartDate;
     private LocalDate actualEndDate;
     private String accomplishments;

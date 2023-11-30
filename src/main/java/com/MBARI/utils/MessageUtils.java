@@ -2,6 +2,7 @@ package com.MBARI.utils;
 
 public class MessageUtils {
     public static final String EXPEDITION_ADDED_SUCCESSFULLY = "Expedition added successfully";
+    public static final String EXPEDITION_MODIFIED_SUCCESSFULLY = "Expedition added successfully";
     public static final String ROV_DIVE_ADDED_SUCCESSFULLY = "Remotely Operated Vehicle Dive added successfully";
 
     public static final String NO_SHIP_DATA = "No ship data";
