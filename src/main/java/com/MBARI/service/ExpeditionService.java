@@ -55,6 +55,7 @@ public class ExpeditionService {
         expeditionEntity.setParticipants(pre.getParticipants());
         expeditionEntity.setRegionDescription(pre.getRegionDescription());
         expeditionEntity.setPlannedTrackDescription(pre.getPlannedTrackDescription());
+        expeditionEntity.setIsPreApproved(pre.getIsPreApproved());
 
         expeditionRepository.save(expeditionEntity);
         return MessageUtils.EXPEDITION_ADDED_SUCCESSFULLY;

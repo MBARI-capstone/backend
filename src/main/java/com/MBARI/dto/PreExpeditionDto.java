@@ -16,4 +16,5 @@ public class PreExpeditionDto {
     private String participants;
     private String regionDescription;
     private String plannedTrackDescription;
+    private Boolean isPreApproved;
 }
