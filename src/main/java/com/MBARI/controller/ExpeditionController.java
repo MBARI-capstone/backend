@@ -1,6 +1,7 @@
 package com.MBARI.controller;
 
 import com.MBARI.dto.*;
+import com.MBARI.entity.ExpeditionEntity;
 import com.MBARI.service.ExpeditionService;
 import com.MBARI.utils.MessageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -62,6 +64,12 @@ public class ExpeditionController {
         } else {
             return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/postExpedition")
+    public ResponseEntity<List<ExpeditionDto>> getAllPostExpeditions() {
+        List<ExpeditionDto> expeditionDtos = expeditionService.getAllPostExpeditions();
+        return new ResponseEntity<>(expeditionDtos, HttpStatus.OK);
     }
 
     @PostMapping("/search")

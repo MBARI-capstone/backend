@@ -85,6 +85,7 @@ public class ExpeditionService {
         return unApprovedPreExpeditionDtos;
     }
 
+    @Transactional
     public String approvePreExpedition(Integer expeditionId) {
         ExpeditionEntity expedition = expeditionRepository.findById(expeditionId).orElseThrow(null);
         if (expedition == null) return MessageUtils.NO_EXPEDITION_DATA;
@@ -138,6 +139,38 @@ public class ExpeditionService {
         expeditionRepository.save(expeditionEntity);
 
         return MessageUtils.EXPEDITION_ADDED_SUCCESSFULLY;
+    }
+
+    public List<ExpeditionDto> getAllPostExpeditions() {
+        List<ExpeditionEntity> expeditionEntities = expeditionRepository.findAll();
+        List<ExpeditionDto> expeditionDtos = new ArrayList<>();
+        for (ExpeditionEntity expeditionEntity : expeditionEntities) {
+            if (expeditionEntity.getIsPreApproved() && expeditionEntity.getActualStartDate() != null) {
+                ExpeditionDto dto = new ExpeditionDto();
+                dto.setExpeditionId(expeditionEntity.getExpeditionId());
+                dto.setShipName(expeditionEntity.getShip().getShipName());
+                dto.setChiefScientistName(expeditionEntity.getChiefScientist().getFirstName() + " " + expeditionEntity.getChiefScientist().getLastName());
+                dto.setPrincipalInvestigatorName(expeditionEntity.getPrincipalInvestigator().getFirstName() + " " + expeditionEntity.getChiefScientist().getLastName());
+                dto.setPurpose(expeditionEntity.getPurpose());
+                dto.setScheduledStartDate(expeditionEntity.getScheduledStartDate());
+                dto.setScheduledEndDate(expeditionEntity.getScheduledEndDate());
+                dto.setEquipmentDescription(expeditionEntity.getEquipmentDescription());
+                dto.setParticipants(expeditionEntity.getParticipants());
+                dto.setRegionDescription(expeditionEntity.getRegionDescription());
+                dto.setPlannedTrackDescription(expeditionEntity.getPlannedTrackDescription());
+                dto.setActualStartDate(expeditionEntity.getActualStartDate());
+                dto.setActualEndDate(expeditionEntity.getActualEndDate());
+                dto.setAccomplishments(expeditionEntity.getAccomplishments());
+                dto.setScientistComments(expeditionEntity.getScientistComments());
+                dto.setSciObjectivesMet(expeditionEntity.getSciObjectivesMet());
+                dto.setOperatorComments(expeditionEntity.getOperatorComments());
+                dto.setAllEquipmentFunctioned(expeditionEntity.getAllEquipmentFunctioned());
+                dto.setOtherComments(expeditionEntity.getOtherComments());
+
+                expeditionDtos.add(dto);
+            }
+        }
+        return expeditionDtos;
     }
 
     @Transactional
